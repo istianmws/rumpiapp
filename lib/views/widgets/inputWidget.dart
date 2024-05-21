@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class InputWidget extends StatelessWidget {
+class InputWidget extends StatefulWidget {
   final String label;
   final String hint;
   final IconData prefixIcon;
@@ -19,22 +19,33 @@ class InputWidget extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<InputWidget> createState() => _InputWidgetState();
+}
+
+class _InputWidgetState extends State<InputWidget> {
+  bool _isPasswordVisible = false;
+
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      validator: validator,
-      obscureText: isPassword,
+      controller: widget.controller,
+      validator: widget.validator,
+      obscureText: widget.isPassword && !_isPasswordVisible, 
       decoration: InputDecoration(
-        labelText: label,
-        hintText: hint,
-        prefixIcon: Icon(prefixIcon),
+        labelText: widget.label,
+        hintText: widget.hint,
+        prefixIcon: Icon(widget.prefixIcon),
         border: OutlineInputBorder(),
-        suffixIcon: isPassword
+        suffixIcon: widget.isPassword
             ? IconButton(
           icon: Icon(
-            isPassword ? Icons.visibility : Icons.visibility_off,
+            _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
           ),
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              _isPasswordVisible = !_isPasswordVisible;
+            });
+          },
         )
             : null,
       ),

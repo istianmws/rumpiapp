@@ -43,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      '/images/rumpiapp.png',
+                      'assets/images/rumpiapp.png',
                       width: 250,
                       height: 250,
                     ),
