@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart';
+import 'package:rumpiapp/models/postsModel.dart';
 
 class PostData extends StatelessWidget {
   const PostData({
-    super.key,
+    super.key, required this.post,
   });
+
+  final PostsModel post;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
           padding: const EdgeInsets.all(16.0),
@@ -16,28 +20,28 @@ class PostData extends StatelessWidget {
             color: const Color.fromARGB(255, 225, 225, 225),
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Username',
-                style: TextStyle(
+                post.user!.name!,
+                style: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                'Username@mail.com',
+                post.user!.email!,
                 style: TextStyle(
                   fontSize: 10.0,
                   fontWeight: FontWeight.w300,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16.0,
               ),
               Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec odio.',
+                post.content!,
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
