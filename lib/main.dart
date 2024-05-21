@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:rumpiapp/views/loginPage.dart';
 import 'package:rumpiapp/views/registerPage.dart';
 
-void main() {
+Future<void> main() async {
+  
+  await GetStorage.init();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }

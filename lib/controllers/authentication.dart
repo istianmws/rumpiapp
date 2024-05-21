@@ -75,7 +75,10 @@ class AuthenticationController extends GetxController {
       if (response.statusCode == 200) {
         debugPrint(json.encode(response.body));
         token.value = json.decode(response.body)['token'];
-        box.write('token', token.value);
+        String username = json.decode(response.body)['user']['username'];
+        // print(username);
+        box.write('token', token.value,);
+        box.write('username', username);
         Get.offAll(() => const HomePage());
         isLoading.value = false;
       } else {
