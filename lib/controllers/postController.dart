@@ -107,4 +107,87 @@ class PostController extends GetxController {
       }
     } catch (e) {}
   }
+
+  Future createComment(id, body) async {
+    try {
+      isLoading.value = true;
+      var data = {
+        'body': body,
+      };
+      var request = await http.post(Uri.parse('${url}feed/comment/$id'),
+          headers: {
+            'Accept': 'application',
+            'Authorization': 'Bearer ' + box.read('token'),
+          },
+          body: data);
+      if (request.statusCode == 201) {
+        isLoading.value = false;
+        Get.snackbar(
+          'Success',
+          'Comment created successfully',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        print(json.decode(request.body));
+      } else {
+        isLoading.value = false;
+        Get.snackbar(
+          'Error',
+          json.decode(request.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        print(json.decode(request.body));
+      }
+    } catch (e) {}
+  }
+
+  Future likePost(id) async {
+    try {
+      isLoading.value = true;
+      var request = await http.post(Uri.parse('${url}feed/like/$id'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + box.read('token'),
+      });
+
+      if (request.statusCode == 200){
+        var post = posts.value.firstWhere((post) => post.id == id);
+        post.liked = !post.liked!;
+        posts.refresh();
+        if(json.decode(request.body)['message'] == 'like success'){
+          Get.snackbar(
+            'Success',
+            'Post liked successfully',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+        } else {
+          Get.snackbar(
+            'Success',
+            'Gosipnya overrated',
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: Colors.red,
+            colorText: Colors.white,
+          );
+        }
+        isLoading.value = false;
+        
+        print(json.decode(request.body));
+      } else {
+        isLoading.value = false;
+        Get.snackbar(
+          'Error',
+          json.decode(request.body)['message'],
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+        print(json.decode(request.body));
+      }
+
+    } catch (e) {}
+  }
 }

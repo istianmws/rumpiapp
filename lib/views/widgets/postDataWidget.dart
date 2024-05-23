@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
+import 'package:rumpiapp/controllers/postController.dart';
 import 'package:rumpiapp/models/postsModel.dart';
 import 'package:rumpiapp/views/postDetailPage.dart';
 
-class PostData extends StatelessWidget {
+class PostData extends StatefulWidget {
   const PostData({
     super.key,
     required this.post,
   });
 
   final PostsModel post;
+
+  @override
+  State<PostData> createState() => _PostDataState();
+}
+
+class _PostDataState extends State<PostData> {
+
+  final PostController _postController = Get.put(PostController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +54,14 @@ class PostData extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        post.user!.name!,
+                        widget.post.user!.name!,
                         style: const TextStyle(
                           fontSize: 16.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        post.user!.email!,
+                        widget.post.user!.email!,
                         style: TextStyle(
                           fontSize: 10.0,
                           fontWeight: FontWeight.w300,
@@ -66,7 +75,7 @@ class PostData extends StatelessWidget {
                 height: 16.0,
               ),
               Text(
-                post.content!,
+                widget.post.content!,
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
@@ -78,12 +87,15 @@ class PostData extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.favorite_border),
+              onPressed: () async{
+                await _postController.likePost(widget.post.id!);
+              },
+              icon: Icon(widget.post.liked! ? Icons.favorite : Icons.favorite_border,
+                  color: widget.post.liked! ? Colors.red : null,),
             ),
             IconButton(
               onPressed: () {
-                Get.to(() => DetailPage(post: post));
+                Get.to(() => DetailPage(post: widget.post));
               },
               icon: const Icon(Icons.comment_outlined),
             ),

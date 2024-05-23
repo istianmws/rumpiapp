@@ -71,6 +71,9 @@ class _DetailPageState extends State<DetailPage> {
                           // shrinkWrap: true,
                           itemCount: _postController.comments.value.length,
                           itemBuilder: (context, index) {
+                            _postController.comments.value.sort(
+                                (a, b) => a.createdAt!.compareTo(b.createdAt!));
+
                             DateTime dateTime = _postController
                                 .comments.value[index].createdAt!;
                             String dateOnly =
@@ -133,7 +136,14 @@ class _DetailPageState extends State<DetailPage> {
                 ),
                 minimumSize: const Size(250.0, 50.0),
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await _postController.createComment(
+                  widget.post.id!,
+                  _commentController.text.trim(),
+                );
+                _commentController.clear();
+                _postController.getComments(widget.post.id!);
+              },
               child: const Text(
                 'Kirim',
                 style: TextStyle(color: Colors.white),
