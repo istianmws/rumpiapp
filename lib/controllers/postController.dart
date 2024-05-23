@@ -6,10 +6,12 @@ import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rumpiapp/constants/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:rumpiapp/models/commentsModel.dart';
 import 'package:rumpiapp/models/postsModel.dart';
 
 class PostController extends GetxController {
   Rx<List<PostsModel>> posts = Rx<List<PostsModel>>([]);
+  Rx<List<CommentsModel>> comments = Rx<List<CommentsModel>>([]);
 
   final isLoading = false.obs;
   final box = GetStorage();
@@ -26,7 +28,7 @@ class PostController extends GetxController {
       isLoading.value = true;
       var response = await http.get(Uri.parse('${url}feeds'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer '+ box.read('token'),
+        'Authorization': 'Bearer ' + box.read('token'),
       });
       if (response.statusCode == 200) {
         isLoading.value = false;
@@ -57,7 +59,7 @@ class PostController extends GetxController {
         Uri.parse('${url}feed/store'),
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer '+ box.read('token'),
+          'Authorization': 'Bearer ' + box.read('token'),
         },
         body: data,
       );
@@ -82,9 +84,27 @@ class PostController extends GetxController {
         );
         print(json.decode(response.body));
       }
-      
-    } catch (e) {
-      
-    }
+    } catch (e) {}
+  }
+
+  Future getComments(id) async {
+    try {
+      comments.value.clear();
+      isLoading.value = true;
+      var response =
+          await http.get(Uri.parse('${url}feed/comments/$id'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + box.read('token'),
+      });
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        for (var item in json.decode(response.body)['comments']) {
+          comments.value.add(CommentsModel.fromJson(item));
+        }
+      } else {
+        isLoading.value = false;
+        print(json.decode(response.body));
+      }
+    } catch (e) {}
   }
 }

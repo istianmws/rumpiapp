@@ -36,9 +36,10 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
           title: const Text('Rumpi App', style: TextStyle(color: Colors.white)),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+          backgroundColor: Colors.black87,
         ),
         body: Container(
           padding: const EdgeInsets.all(16.0),
@@ -52,9 +53,11 @@ class _HomePageState extends State<HomePage> {
               ),
               _gap(),
               ElevatedButton(
+                
                 clipBehavior: Clip.none,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
+                  
+                  backgroundColor: Colors.black54,
                   // padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
                   elevation: 3.0,
                   shape: RoundedRectangleBorder(
@@ -79,16 +82,17 @@ class _HomePageState extends State<HomePage> {
               ),
               _gap(),
               const Divider(
-                color: Colors.black,
+                color: Colors.black26,
                 thickness: 1.0,
               ),
               _gap(),
-              _gap(),
-              const Text(
-                'Gosip hari ini',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
+              const Center(
+                child: Text(
+                  'Kabar gosip terbaru',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               _gap(),
