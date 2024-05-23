@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:rumpiapp/controllers/postController.dart';
+import 'package:rumpiapp/views/loginPage.dart';
 
 import 'widgets/postDataWidget.dart';
 import 'widgets/postFieldWidget.dart';
@@ -40,6 +41,54 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Rumpi App', style: TextStyle(color: Colors.white)),
           centerTitle: true,
           backgroundColor: Colors.black87,
+          actions: [
+            IconButton(
+              onPressed: () {
+                Get.defaultDialog(
+                  contentPadding: EdgeInsets.all(8),
+                  title: 'Logout',
+                  middleText: 'Apakah anda yakin ingin keluar?',
+                  actions: [
+                    ElevatedButton(
+                      clipBehavior: Clip.none,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade300,
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                        elevation: 3.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        minimumSize: const Size(100.0, 50.0),
+                      ),
+                      onPressed: () {
+                        box.erase();
+                        Get.offAll(() => LoginPage());
+                        ;
+                      },
+                      child: const Text('Ya', style: TextStyle(color: Colors.white),)
+                    ),
+                    ElevatedButton(
+                      clipBehavior: Clip.none,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black45,
+                        padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
+                        elevation: 3.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        minimumSize: const Size(100.0, 50.0),
+                      ),
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: const Text('Tidak', style: TextStyle(color: Colors.white),)
+                    ),
+                  ],
+                );
+              },
+              icon: const Icon(Icons.logout),
+            ),
+          ],
         ),
         body: Container(
           padding: const EdgeInsets.all(16.0),
@@ -53,10 +102,8 @@ class _HomePageState extends State<HomePage> {
               ),
               _gap(),
               ElevatedButton(
-                
                 clipBehavior: Clip.none,
                 style: ElevatedButton.styleFrom(
-                  
                   backgroundColor: Colors.black54,
                   // padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 16.0),
                   elevation: 3.0,
@@ -100,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                 return _postController.isLoading.value
                     ? const Center(child: CircularProgressIndicator())
                     : Expanded(
-                      child: ListView.builder(
+                        child: ListView.builder(
                           physics: BouncingScrollPhysics(),
                           // shrinkWrap: true,
                           itemCount: _postController.posts.value.length,
@@ -110,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         ),
-                    );
+                      );
                 // PostData();
               }),
             ],
